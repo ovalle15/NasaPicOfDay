@@ -1,33 +1,31 @@
 const labelcoll = require('./app-schema')
+const axios = require('axios')
+const dotenv = require('dotenv')
+dotenv.config()
 
-
-getImage = async(req, response) => {
-  console.log('-------- GET ALL DOCS --------')
-  await labelcoll.find({}, (error, image)=> {
-    if (error) {
-      console.error(`400 in getImage: ${error}`);
-      return response
-        .status(400)
-        .json({
-          success: false,
-          error: error
-        })
-    } if (!image.length) {
-      console.error(`404 in getImage: ${image} not found`)
-      return response
-        .status(404)
-        .json({
-          success: false,
-          error: 'Image not found'
-        });
-    };
-    console.log(`200 in getImage: ${image.length} images fetched`)
+const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
+console.log(url)
+getImage = async() => {
+  console.log('-------- GET IMAGE  --------')
+  try {
+    const response =  await axios.get(url);
+    console.log(response.data);
     return response
+      .status(200)
       .json({
-        success: true,
-        item: image
+          success: true,
+          item: response.data,
+          message: 'Image has been fetched'
       })
-  })
+  } catch (error) {
+    console.error(`400 in getImage: ${error}`);
+    return response
+      .status(400)
+      .json({
+        success: false,
+        error: error
+    })
+  }
 }
 
 getUser = async(req, response) => {

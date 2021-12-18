@@ -6,11 +6,6 @@ const db = require('./server/db')
 const bodyParser = require('body-parser')
 dotenv.config()
 
-
-const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
-
-console.log(url)
-
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
