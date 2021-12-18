@@ -7,7 +7,7 @@ let appSchema = new Schema(
       type: String,
       required:true
     },
-    url_image: {
+    image_id: {
       type: String,
       required: false
     },

@@ -1,25 +1,39 @@
 import logo from './logo.svg';
+import FetchImage from './components/FetchImage'
 import './App.css';
+import React, { Component } from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const HOME = '/nasaimage';
+
+
+const ViewContainer = styled.div.attrs({
+  className: 'view-container'
+})`
+  padding: 0% 10%;
+  /* max-height: 100vh; */
+`;
+
+
+class App extends Component {
+  render () {
+    const Views = (
+      <Switch>
+        <Route exact path={HOME} component={FetchImage}></Route>
+      </Switch>
+    );
+    return (
+      <Router>
+        <ViewContainer>
+          {Views}
+        </ViewContainer>
+      </Router>
+    )
+
+  };
 }
 
 export default App;

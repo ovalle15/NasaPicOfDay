@@ -1,31 +1,56 @@
-const labelcoll = require('./app-schema')
+const labelcoll = require('./schemas/app-schema')
+const imagecoll = require('./schemas/image-schema')
 const axios = require('axios')
 const dotenv = require('dotenv')
 dotenv.config()
 
 const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
 console.log(url)
+
+
 getImage = async(req, response) => {
   console.log('-------- GET IMAGE  --------')
-  try {
+
     const res = await axios.get(url);
-    console.log(res.data);
-    return response
-      .status(200)
-      .json({
-          success: true,
-          item: res.data,
-          message: 'Image has been fetched'
+    if (!res){
+      console.error(`400 in createUser`)
+      return response
+        .status(400)
+        .json({
+          success: false,
+          error: "Input Incorrect Data"
+        });
+    }
+    const checkImg =  await imagecoll.findOne({"image_path": res.data.url}).lean()
+    if (!checkImg) {
+      const obj = {
+        total_ratings: 0,
+        image_path: res.data.url
+      }
+      const img = new imagecoll(obj);
+      return img
+      .save()
+      .then((saved) =>{
+        if (saved) {
+          console.log(`202 in getImage, the following image record was created: ${img}`)
+          return response
+            .status(200)
+            .json({
+              success: true,
+              item: img
+            })
+        };
       })
-  } catch (error) {
-    console.error(`400 in getImage: ${error}`);
-    return response
-      .status(400)
-      .json({
-        success: false,
-        error: error
-    })
-  }
+    } else {
+      console.log("Skipping image insertion, this image already exists in the db", res.data)
+      return response
+        .status(200)
+        .json({
+          success: true,
+          item : res.data.url,
+          message: "This Image Already Exists in the DB"
+        })
+    }
 }
 
 getUser = async(req, response) => {
@@ -102,8 +127,7 @@ createUser = async(req, response) => {
       })
     })
 }
-
-updateUser = async(req, response) => {
+updateRating = async(req, response) => {
   const body = req.body;
   if(!body) {
     console.error(`400 in updateUser: you must provide an user to update`)
@@ -114,10 +138,11 @@ updateUser = async(req, response) => {
         error: "You must provide an item to update"
       });
   }
-  const userForUpdate = {
-    email: req.body.email
+  const ratingForUpdate = {
+    rating: req.body.rating,
+    image_id: req.body.image_id
   };
-  return labelcoll.updateOne({_id: req.params.id}, userForUpdate, (err, writeOpRes) => {
+  return labelcoll.updateOne({_id: req.params.id}, ratingForUpdate, (err, writeOpRes) => {
     if (err) {
       console.error(`updateUser: user not found`)
       console.error(err)
@@ -137,7 +162,7 @@ updateUser = async(req, response) => {
       .status(200)
       .json({
         success: true,
-        item: userForUpdate,
+        item: ratingForUpdate,
         writeOpResult: result
       });
   })
@@ -192,7 +217,7 @@ deleteUser = async(req, response) => {
 module.exports = {
   getImage,
   getUser,
-  updateUser,
+  updateRating,
   createUser,
   deleteUser
 }
