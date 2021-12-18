@@ -1,0 +1,36 @@
+const express = require('express')
+const cors = require('cors')
+const dotenv = require('dotenv')
+const routerApp = require('./server/router-app')
+const db = require('./server/db')
+const bodyParser = require('body-parser')
+dotenv.config()
+
+
+const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
+
+console.log(url)
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+const apiPort = process.env.PORT;
+
+db.on('error', console.error.bind(console, "[ERROR] MongoDB connection error "))
+
+
+app.get('/', (req, res) => {
+  res.send("Hello this is a new appp")
+})
+app.use('/api', routerApp);
+
+
+const server = app.listen(apiPort, () => {
+  console.log(`======== SERVER RUNNING ON PORT: ${apiPort}==========`)
+})
+
+module.exports = {
+  app,
+  server
+}
