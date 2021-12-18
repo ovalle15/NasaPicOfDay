@@ -5,16 +5,16 @@ dotenv.config()
 
 const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
 console.log(url)
-getImage = async() => {
+getImage = async(req, response) => {
   console.log('-------- GET IMAGE  --------')
   try {
-    const response =  await axios.get(url);
-    console.log(response.data);
+    const res = await axios.get(url);
+    console.log(res.data);
     return response
       .status(200)
       .json({
           success: true,
-          item: response.data,
+          item: res.data,
           message: 'Image has been fetched'
       })
   } catch (error) {
@@ -105,7 +105,6 @@ createUser = async(req, response) => {
 
 updateUser = async(req, response) => {
   const body = req.body;
-
   if(!body) {
     console.error(`400 in updateUser: you must provide an user to update`)
     return response
