@@ -48,4 +48,4 @@ e.g (/api/user/123sad456896868asde)
 
 
 
-![Activity Diagram](Activity_diagram.jpec)
+![Activity Diagram](Activity_diagram.jpeg)
