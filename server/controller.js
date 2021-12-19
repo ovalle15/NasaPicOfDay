@@ -226,7 +226,7 @@ deleteUser = async(req, response) => {
       })
     })
   .catch(err => {
-    console.error(`caught error in createUser: ${err}`);
+    console.error(`caught error in deleteUser: ${err}`);
     Object.keys(err.errors).forEach(errorKey => {
       console.error(`[ERROR] for: ${errorKey}`);
       console.error(`=> ${(err.errors[errorKey] || {}).properties || {}.message}`)
