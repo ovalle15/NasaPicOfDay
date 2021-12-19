@@ -9,6 +9,7 @@ dotenv.config()
 const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
 console.log(url)
 
+/** Image Collection Transactions */
 
 getImage = async(req, response) => {
   console.log('-------- GET IMAGE  --------')
@@ -54,7 +55,7 @@ getImage = async(req, response) => {
         })
     }
 }
-
+/** User Collection Transactions */
 getUser = async(req, response) => {
   console.log('---------- GET USER -------')
   await labelcoll.find({_id: req.params.id}, (err, user)=>{
@@ -88,7 +89,6 @@ getUser = async(req, response) => {
 createUser = async(req, response) => {
   console.log('------- CREATE NEW USER -------- ')
   const body = req.body;
-  console.log("this is body ==>",body)
   if (!body) {
     console.error(`400 in createUser`)
     return response
@@ -98,7 +98,47 @@ createUser = async(req, response) => {
         error: "Input Incorrect Data"
       });
   };
-
+  // check if user already exists, if exists it will look for a new
+  // image for rating
+  const findUserExists = await labelcoll.findOne({email: req.body.email})
+  if (findUserExists) {
+    console.log('User already exists, checking if new image exists for rating...')
+    const newId = await imagecoll.findOne({}).sort({_id: -1})
+    const userImageIds = await labelcoll.distinct('image_id', {email: req.body.email})
+    for (i of userImageIds) {
+      if (!i.equals(newId._id)) {
+      let obj = {
+        email: req.body.email,
+        image_id: newId._id,
+        rating: 0
+      }
+      const newImageForUser =  new labelcoll(obj)
+      if (!newImageForUser) {
+        console.error(`400 in createNewImageForUser, document is malformed`)
+        return response
+          .status(400)
+          .json({
+            success: false,
+            message: "Document is malformed"
+          })
+      };
+      return response
+        .status(200)
+        .json({
+          success: true,
+          item: newImageForUser,
+          message: "A new image was found for rating for existing user"
+        })
+      }
+      return response
+      .status(400)
+      .json({
+        success: false,
+        error: "User already exists, and no new image for rating was found"
+      })
+    }
+  }
+  // Find the latest image fetched and add to new user for review
   const ids = await imagecoll.findOne({}).sort({_id:-1})
   let obj = {}
   if (ids){
@@ -112,7 +152,7 @@ createUser = async(req, response) => {
         email: req.body
       }
   }
-
+  // Create new user
   const user = new labelcoll(obj);
   if (!user) {
     console.error(`400 in createUser, user document is malformed`)
@@ -163,6 +203,9 @@ updateRating = async(req, response) => {
     rating: body.rating
   };
   console.log('ratingForUpdate: ', ratingForUpdate);
+  await imagecoll.findOneAndUpdate({_id: params.image_id},
+    {$inc : {rating: ratingForUpdate.rating }})
+
   await labelcoll.findOneAndUpdate({_id: params.id, image_id: params.image_id },
         {$set: {rating: ratingForUpdate.rating}},
       (err, writeOpRes) => {
