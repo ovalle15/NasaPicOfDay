@@ -2,6 +2,8 @@ const labelcoll = require('./schemas/app-schema')
 const imagecoll = require('./schemas/image-schema')
 const axios = require('axios')
 const dotenv = require('dotenv')
+const mongoose = require('mongoose')
+
 dotenv.config()
 
 const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_TOKEN}`
@@ -96,7 +98,22 @@ createUser = async(req, response) => {
         error: "Input Incorrect Data"
       });
   };
-  const user = new labelcoll(body);
+
+  const ids = await imagecoll.findOne({}).sort({_id:-1})
+  let obj = {}
+  if (ids){
+    obj = {
+      email: req.body.email,
+      image_id: mongoose.Types.ObjectId(ids._id) ,
+      rating: 0
+    }
+  } else {
+      obj = {
+        email: req.body
+      }
+  }
+
+  const user = new labelcoll(obj);
   if (!user) {
     console.error(`400 in createUser, user document is malformed`)
     return response
@@ -127,8 +144,12 @@ createUser = async(req, response) => {
       })
     })
 }
+
 updateRating = async(req, response) => {
-  const body = req.body;
+  const { body, params } = req || {};
+  console.log('body: ', body);
+  console.log('params: ', params);
+
   if(!body) {
     console.error(`400 in updateUser: you must provide an user to update`)
     return response
@@ -139,10 +160,17 @@ updateRating = async(req, response) => {
       });
   }
   const ratingForUpdate = {
-    rating: req.body.rating,
-    image_id: req.body.image_id
+    rating: body.rating
   };
-  return labelcoll.updateOne({_id: req.params.id}, ratingForUpdate, (err, writeOpRes) => {
+  console.log('ratingForUpdate: ', ratingForUpdate);
+  // {
+  //   query: { name: "Andy" },
+  //   update: { $inc: { score: 1 } },
+  //   upsert: true
+  // }
+  await labelcoll.findOneAndUpdate({_id: params.id, image_id: params.image_id },
+        {$set: {rating: ratingForUpdate.rating}},
+      (err, writeOpRes) => {
     if (err) {
       console.error(`updateUser: user not found`)
       console.error(err)
@@ -156,8 +184,9 @@ updateRating = async(req, response) => {
     };
     console.log(writeOpRes);
     return writeOpRes
-  })
+  }).clone()
   .then(result => {
+    console.log(`User's ${req.params.id} rating updates :${ratingForUpdate.rating}`)
     return response
       .status(200)
       .json({
@@ -166,13 +195,13 @@ updateRating = async(req, response) => {
         writeOpResult: result
       });
   })
-  .catch(err => {
-    console.error(`caught error in createUser: ${err}`);
-    Object.keys(err.errors).forEach(errorKey => {
-      console.error(`[ERROR] for: ${errorKey}`);
-      console.error(`=> ${(err.errors[errorKey] || {}).properties || {}.message}`)
-    })
-  })
+  // .catch(err => {
+  //   console.error(`caught error in updateRating: ${err}`);
+  //   Object.keys(err.errors).forEach(errorKey => {
+  //     console.error(`[ERROR] for: ${errorKey}`);
+  //     console.error(`=> ${(err.errors[errorKey] || {}).properties || {}.message}`)
+  //   })
+  // })
 };
 
 deleteUser = async(req, response) => {

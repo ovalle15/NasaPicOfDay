@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+var ObjectId = Schema.ObjectId
+
 let appSchema = new Schema(
   {
     email: {
@@ -8,7 +11,7 @@ let appSchema = new Schema(
       required:true
     },
     image_id: {
-      type: String,
+      type: ObjectId,
       required: false
     },
     rating: {

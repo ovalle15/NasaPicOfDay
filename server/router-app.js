@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/nasaimage', controller.getImage);
 router.get('/user/:id', controller.getUser);
 router.post('/user', controller.createUser);
-router.put('/user/:id', controller.updateRating);
+router.patch('/user/:id/:image_id', controller.updateRating);
 router.delete('/user/:id', controller.deleteUser)
 
 module.exports = router;
