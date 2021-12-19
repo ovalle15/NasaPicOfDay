@@ -58,7 +58,7 @@ getImage = async(req, response) => {
 /** User Collection Transactions */
 getUser = async(req, response) => {
   console.log('---------- GET USER -------')
-  await labelcoll.find({_id: req.params.id}, (err, user)=>{
+  await labelcoll.find({_id: req.params.id}, (error, user)=>{
     if (error) {
       console.log(`400 in getUser: ${error}`)
       return response
@@ -199,6 +199,14 @@ updateRating = async(req, response) => {
         error: "You must provide an item to update"
       });
   }
+  if (body.rating > 5) {
+    return response
+      .status(400)
+      .json({
+        success: false,
+        error: "Ratings must be between 0 and 5"
+      })
+  }
   const ratingForUpdate = {
     rating: body.rating
   };
@@ -277,10 +285,49 @@ deleteUser = async(req, response) => {
   });
 };
 
+getUserRatings = async(req, response) => {
+  let obj = {}
+  await labelcoll.find({email: req.body.email}, (error, user) => {
+    if (error) {
+      console.log(`400 in getUserRatings: ${error}`)
+      return response
+        .status(400)
+        .json({
+          success: false,
+          error: error
+        })
+    } if (!user.length) {
+      console.error(`404 in getUser: User not found`)
+      return response
+        .status(404)
+        .json({
+          success: false,
+          error: 'Document Not Found'
+        });
+    };
+    return user
+  })
+  .clone()
+  .then((result) => {
+    for (i of result){
+      obj[i.image_id] = i.rating
+    }
+    return response
+      .status(200)
+      .json({
+        success: true,
+        images:  obj,
+        user:  req.body.email,
+        message: "User ratings per image has been retrieved"
+      })
+  })
+};
+
 module.exports = {
   getImage,
   getUser,
   updateRating,
   createUser,
-  deleteUser
+  deleteUser,
+  getUserRatings
 }
