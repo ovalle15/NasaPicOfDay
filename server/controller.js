@@ -272,7 +272,7 @@ deleteUser = async(req, response) => {
       .status(200)
       .json({
           success: true,
-          item: result,
+          item: req.params.id,
           message: 'User has been deleted'
       })
     })
@@ -305,6 +305,7 @@ getUserRatings = async(req, response) => {
           error: 'Document Not Found'
         });
     };
+    console.log(`Ratings for user ${req.body.email} have been retrieved` )
     return user
   })
   .clone()
@@ -318,7 +319,7 @@ getUserRatings = async(req, response) => {
         success: true,
         images:  obj,
         user:  req.body.email,
-        message: "User ratings per image has been retrieved"
+        message: "User ratings per image have been retrieved"
       })
   })
 };
