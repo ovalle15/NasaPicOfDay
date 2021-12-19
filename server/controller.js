@@ -163,11 +163,6 @@ updateRating = async(req, response) => {
     rating: body.rating
   };
   console.log('ratingForUpdate: ', ratingForUpdate);
-  // {
-  //   query: { name: "Andy" },
-  //   update: { $inc: { score: 1 } },
-  //   upsert: true
-  // }
   await labelcoll.findOneAndUpdate({_id: params.id, image_id: params.image_id },
         {$set: {rating: ratingForUpdate.rating}},
       (err, writeOpRes) => {
@@ -184,7 +179,8 @@ updateRating = async(req, response) => {
     };
     console.log(writeOpRes);
     return writeOpRes
-  }).clone()
+  })
+  .clone()
   .then(result => {
     console.log(`User's ${req.params.id} rating updates :${ratingForUpdate.rating}`)
     return response
@@ -195,18 +191,18 @@ updateRating = async(req, response) => {
         writeOpResult: result
       });
   })
-  // .catch(err => {
-  //   console.error(`caught error in updateRating: ${err}`);
-  //   Object.keys(err.errors).forEach(errorKey => {
-  //     console.error(`[ERROR] for: ${errorKey}`);
-  //     console.error(`=> ${(err.errors[errorKey] || {}).properties || {}.message}`)
-  //   })
-  // })
+  .catch(err => {
+    console.error(`caught error in updateRating: ${err}`);
+    Object.keys(err.errors).forEach(errorKey => {
+      console.error(`[ERROR] for: ${errorKey}`);
+      console.error(`=> ${(err.errors[errorKey] || {}).properties || {}.message}`)
+    })
+  })
 };
 
 deleteUser = async(req, response) => {
   console.log('------ DELETE USER ----- ')
-  await labelcoll.findOneAndDelete({_id: req.params.id}, (err, user) => {
+  await labelcoll.findByIdAndDelete({_id: req.params.id}, (err, user) => {
     if(err) {
       console.error(`400 in deleteUser: ${err}`);
       return response
@@ -216,24 +212,19 @@ deleteUser = async(req, response) => {
           error: err
         });
     };
-    if (!user) {
-      console.error(`400 in deleteUser: user not found -. ${user}`);
+    return user
+     })
+     .clone()
+     .then(result => {
+      console.log(`Document with _id : ${req.params.id}, has been deleted`)
       return response
-        .status(404)
-        .json({
-          success: false,
-          error: 'User not found'
-        });
-    };
-    console.log(`Document with _id : ${req.params.id}, has been deleted`)
-    return response
       .status(200)
       .json({
           success: true,
-          item: user,
+          item: result,
           message: 'User has been deleted'
       })
-  })
+    })
   .catch(err => {
     console.error(`caught error in createUser: ${err}`);
     Object.keys(err.errors).forEach(errorKey => {
