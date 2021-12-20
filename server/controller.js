@@ -89,13 +89,13 @@ getUser = async(req, response) => {
 createUser = async(req, response) => {
   console.log('**** CREATING NEW USER ****')
   const body = req.body;
-  if (!body) {
+  if (!body || body.email.length === 0 ) {
     console.error(`400 in createUser`)
     return response
       .status(400)
       .json({
         success: false,
-        error: "Input Incorrect Data"
+        error: "Incorrect input data"
       });
   };
   // check if user already exists, if exists it will look for a new
@@ -200,12 +200,12 @@ updateRating = async(req, response) => {
         error: "You must provide an item to update"
       });
   }
-  if (body.rating > 0 && body.rating <= 5) {
+  if (body.rating < 0 || body.rating > 5 || typeof body.rating != 'number') {
     return response
       .status(400)
       .json({
         success: false,
-        error: "Ratings must be between 0 and 5"
+        error: "Ratings must be numbers between 0 and 5"
       })
   }
   const ratingForUpdate = {
