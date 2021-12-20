@@ -30,30 +30,22 @@ Note: You do not need to initialize a mongo db separately, the docker-compose us
 
 *  ```[GET] /api/nasaimage```
 
-2) ```/user/:id```: Gets user by mongo record id
-
-*  ```[GET] /api/user/61bfb7359158437ec6634c51```
-
 [200] Response:
 
 ```json
 {
     "success": true,
-    "item": [
-        {
-            "_id": "61bfb7359158437ec6634c51",
-            "email": "test@gmail.com",
-            "image_id": "61bfb00193bcd5e95424ce93",
-            "rating": 0,
-            "createdAt": "2021-12-19T22:50:29.101Z",
-            "updatedAt": "2021-12-19T22:50:29.101Z",
-            "__v": 0
-        }
-    ]
+    "item": {
+        "total_ratings": 0,
+        "image_path": "https://apod.nasa.gov/apod/image/2112/LeonardMeteor_Poole_960.jpg",
+        "_id": "61bfb00193bcd5e95424ce93",
+        "__v": 0
+    }
 }
+
 ```
 
-3) ```/user```: creates user and inserts image of the day to the user record
+2) ```/user```: creates user and inserts image of the day to the user record
 
 *  ```[POST] /api/user```
 
@@ -80,6 +72,32 @@ Request body:
     }
 }
 ```
+
+
+3) ```/user/:id```: Gets user by mongo record id
+
+*  ```[GET] /api/user/61bfb7359158437ec6634c51```
+
+[200] Response:
+
+```json
+{
+    "success": true,
+    "item": [
+        {
+            "_id": "61bfb7359158437ec6634c51",
+            "email": "test@gmail.com",
+            "image_id": "61bfb00193bcd5e95424ce93",
+            "rating": 0,
+            "createdAt": "2021-12-19T22:50:29.101Z",
+            "updatedAt": "2021-12-19T22:50:29.101Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
+
 4) ```/user/:id/:image_id```: Updates the rating for the user and a specific image
 
 *  ``` [PATCH] /api/user/61bfb7359158437ec6634c51/61bfb00193bcd5e95424ce93```
