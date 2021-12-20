@@ -19,7 +19,7 @@ PORT=3000
 API_TOKEN="your_api_token"
 MONGO_HOST='mongodb://mongo:27017/labelbox'
 ```
-4) Run  ```docker-compose up -d ``` on the root folder 
+4) Run  ```docker-compose up -d ``` on the root folder
 
 Note: You do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container.
 
@@ -126,8 +126,8 @@ Request body:
 }
 ```
 
-6) ```/ratings```: Fetches the ratings for a specific user and specific image must pass
- the user data in the request.
+6) ```/ratings```: Fetches the ratings for a specific user and image, must pass
+ the user email in the request body.
 
 * ```[GET] /ratings```
 
