@@ -18,18 +18,19 @@ PORT=3000
 API_TOKEN="your_api_token"
 MONGO_HOST='mongodb://mongo:27017/labelbox'
 ```
-4) Run  ```docker-compose up -d ``` on the root folder
+4) Run  ```docker-compose up -d ``` in the root folder
 
 Note: You do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container.
 
 
-### Endpoints:
+## Endpoints:
+
 
 1) ```/nasaimage```: Fetches and saves a nasa image of the day in a mongo db
 
 *  ```[GET] /api/nasaimage```
 
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -48,6 +49,7 @@ Note: You do not need to initialize a mongo db separately, the docker-compose us
 
 *  ```[POST] /api/user```
 
+
 Request body:
 
 ```json
@@ -55,7 +57,7 @@ Request body:
         "email": "test@gmail.com"
     }
 ```
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -77,7 +79,7 @@ Request body:
 
 *  ```[GET] /api/user/61bfb7359158437ec6634c51```
 
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -101,7 +103,7 @@ Request body:
 
 *  ``` [PATCH] /api/user/61bfb7359158437ec6634c51/61bfb00193bcd5e95424ce93```
 
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -125,7 +127,7 @@ Request body:
 
 * ```[DELETE] /api/user/61bfbba7702453981c689486```
 
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -156,7 +158,7 @@ Request body:
     }
 ```
 
-[200] Response:
+#### [200] Response:
 
 ```json
 {
@@ -172,7 +174,7 @@ Request body:
 
 ![Activity Diagram](Activity_diagram.jpeg)
 
-## Build with:
+## Build with
 
 * Express: 4.17.2
 * Node: v17.0.1
