@@ -123,29 +123,7 @@ Request body:
 }
 ```
 
-5) ```/user/:id```: Deletes the records of unique user and the corresponding image of the day
-
-* ```[DELETE] /api/user/61bfbba7702453981c689486```
-
-#### [200] Response:
-
-```json
-{
-    "success": true,
-    "item": {
-        "_id": "61bfbba7702453981c689486",
-        "email": "test2@gmail.com",
-        "image_id": "61bfb00193bcd5e95424ce93",
-        "rating": 0,
-        "createdAt": "2021-12-19T23:09:27.562Z",
-        "updatedAt": "2021-12-19T23:09:27.562Z",
-        "__v": 0
-    },
-    "message": "User has been deleted"
-}
-```
-
-6) ```/ratings```: Fetches the ratings for a specific user and image, must pass
+5) ```/ratings```: Fetches the ratings for a specific user and image, must pass
  the user email in the request body.
 
 * ```[GET] /ratings```
@@ -170,6 +148,30 @@ Request body:
     "message": "User ratings per image has been retrieved"
 }
 ```
+
+6) ```/user/:id```: Deletes the records of unique user and the corresponding image of the day
+
+* ```[DELETE] /api/user/61bfbba7702453981c689486```
+
+#### [200] Response:
+
+```json
+{
+    "success": true,
+    "item": {
+        "_id": "61bfbba7702453981c689486",
+        "email": "test2@gmail.com",
+        "image_id": "61bfb00193bcd5e95424ce93",
+        "rating": 0,
+        "createdAt": "2021-12-19T23:09:27.562Z",
+        "updatedAt": "2021-12-19T23:09:27.562Z",
+        "__v": 0
+    },
+    "message": "User has been deleted"
+}
+```
+
+
 ## API UML
 
 ![Activity Diagram](Activity_diagram.jpeg)

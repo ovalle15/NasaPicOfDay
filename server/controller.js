@@ -12,7 +12,7 @@ console.log(url)
 /** Image Collection Transactions */
 
 getImage = async(req, response) => {
-  console.log('-------- GET IMAGE  --------')
+  console.log('**** GETTING IMAGE ****')
 
     const res = await axios.get(url);
     if (!res){
@@ -57,7 +57,7 @@ getImage = async(req, response) => {
 }
 /** User Collection Transactions */
 getUser = async(req, response) => {
-  console.log('---------- GET USER -------')
+  console.log('**** GETTING USER ****')
   await labelcoll.find({_id: req.params.id}, (error, user)=>{
     if (error) {
       console.log(`400 in getUser: ${error}`)
@@ -87,7 +87,7 @@ getUser = async(req, response) => {
 }
 
 createUser = async(req, response) => {
-  console.log('------- CREATE NEW USER -------- ')
+  console.log('**** CREATING NEW USER ****')
   const body = req.body;
   if (!body) {
     console.error(`400 in createUser`)
@@ -186,6 +186,7 @@ createUser = async(req, response) => {
 }
 
 updateRating = async(req, response) => {
+  console.log("**** UPDATING RATING ****")
   const { body, params } = req || {};
   console.log('body: ', body);
   console.log('params: ', params);
@@ -199,7 +200,7 @@ updateRating = async(req, response) => {
         error: "You must provide an item to update"
       });
   }
-  if (body.rating > 5) {
+  if (body.rating > 0 && body.rating <= 5) {
     return response
       .status(400)
       .json({
@@ -239,7 +240,7 @@ updateRating = async(req, response) => {
       .json({
         success: true,
         item: ratingForUpdate,
-        writeOpResult: result
+        message: "Rating updated"
       });
   })
   .catch(err => {
@@ -252,7 +253,7 @@ updateRating = async(req, response) => {
 };
 
 deleteUser = async(req, response) => {
-  console.log('------ DELETE USER ----- ')
+  console.log('**** DELETING USER ****')
   await labelcoll.findByIdAndDelete({_id: req.params.id}, (err, user) => {
     if(err) {
       console.error(`400 in deleteUser: ${err}`);
@@ -286,6 +287,7 @@ deleteUser = async(req, response) => {
 };
 
 getUserRatings = async(req, response) => {
+  console.log('**** GETTING USER RATINGS ****')
   let obj = {}
   await labelcoll.find({email: req.body.email}, (error, user) => {
     if (error) {
