@@ -1,6 +1,6 @@
 # Rate Nasa's astronomy picture of the day !
 
-The following api will allow you to save, rate, the Astronomy picture of the day per user. You will be able to do the following:
+The following api will allow you to save and rate Nasa's astronomy picture of the day per user. You will be able to do the following:
 
 1) Fetch from Nasa's APOD api and save image into a local database
 2) Create and delete users and image specific ratings (1-5)
