@@ -1,8 +1,8 @@
-# Rate Nasa's image of the day !
+# Rate Astronomy picture of the day !
 
-The following api will allow you to rate the Nasa images of the day. You will be able to do the following:
+The following api will allow you to rate the Astronomy picture of the day. You will be able to do the following:
 
-1) Fetch and save Nasa's image into a local database
+1) Fetch and save image into a local database
 2) Create and delete user and image specific ratings (1-5)
 3) Get user information (ratings, email)
 4) Get total user ratings per image
@@ -20,7 +20,9 @@ API_TOKEN="your_api_token"
 MONGO_HOST='mongodb://mongo:27017/labelbox'
 CLIENT_PORT=3001
 ```
-4) Run  ```docker-compose up -d ``` on the root folder
+4) Run  ```docker-compose up -d ``` on the root folder 
+
+Note: You do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container.
 
 
 ### Endpoints:
