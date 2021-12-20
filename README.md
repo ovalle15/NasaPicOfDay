@@ -172,3 +172,9 @@ Request body:
 ## API UML
 
 ![Activity Diagram](Activity_diagram.jpeg)
+
+## Build with:
+
+* Express: 4.17.2
+* Node: v17.0.1
+* MongoDB
