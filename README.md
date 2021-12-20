@@ -1,4 +1,4 @@
-# Rate Astronomy picture of the day !
+# Rate Nasa's astronomy picture of the day !
 
 The following api will allow you to rate the Astronomy picture of the day. You will be able to do the following:
 
