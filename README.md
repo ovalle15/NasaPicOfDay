@@ -13,7 +13,6 @@ The following api will allow you to save and rate Nasa's astronomy picture of th
 3) travel to the root folder and create an ```.env``` file with the following env variables
 
 ```
-APP_ENV=production
 API_HOST=localhost
 PORT=3000
 API_TOKEN="your_api_token"
