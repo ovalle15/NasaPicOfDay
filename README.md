@@ -18,9 +18,12 @@ PORT=3000
 API_TOKEN="your_api_token"
 MONGO_HOST='mongodb://mongo:27017/labelbox'
 ```
-4) Run  ```docker-compose up -d ``` in the root folder
+4) Run  ```docker-compose up -d ```  in the root folder.
 
-Note: You do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container.
+To run outside docker: run ```npm i```, ```npm start``` and add the ```.env``` file inside the server folder to start the api. However, you will need to install and initialize a mongodb in your local machine.
+
+Note: If using docker you do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container. Make sure you are log in into your docker account, since this might prevent issues when running the docker-compose.
+
 
 
 ## Endpoints:
@@ -179,5 +182,5 @@ Request body:
 ## Build with
 
 * Express: 4.17.2
-* Node: v17.0.1
+* Node: v12.14
 * MongoDB
