@@ -22,7 +22,7 @@ MONGO_HOST='mongodb://mongo:27017/labelbox'
 
 To run outside docker: run ```npm i```, ```npm start``` and add the ```.env``` file inside the server folder to start the api. However, you will need to install and initialize a mongodb in your local machine.
 
-Note: If using docker you do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container. Make sure you are log in into your docker account, since this might prevent issues when running the docker-compose.
+Note: If using docker you do not need to initialize a mongo db separately, the docker-compose uses a mongo image to create the database within the container. Make sure you are log in into your docker account and have docker install in your machine.
 
 
 
