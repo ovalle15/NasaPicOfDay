@@ -11,6 +11,7 @@ The following api will allow you to save and rate Nasa's astronomy picture of th
 1) Get a api key token from -> https://api.nasa.gov/index.html
 2) clone this repo
 3) travel to the root folder and create an ```.env``` file with the following env variables
+4) By running docker-compose with the default image, the image will be immediately pulled from docker hub, you can also create your image locally by running ```docker build . -t [tagname]``` and modify the image in the docker-compose.yml
 
 ```
 API_HOST=localhost
