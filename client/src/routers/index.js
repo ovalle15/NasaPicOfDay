@@ -19,8 +19,8 @@ router.use(
             return res.render('index', {
                 layout: 'index',
                 // initialPageData: JSON.stringify(initialPageData),
-                ...res.locals.manifest['common'],
-                ...res.locals.manifest['home'],
+                ...(res.locals?.manifest?.['common'] || {}),
+                ...(res.locals?.manifest?.['home'] || {}),
             });
         } catch (e) {
             return next(e);
