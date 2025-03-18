@@ -12,7 +12,7 @@
         "watch": "webpack --mode=development --node-env=development --watch",
         "clean": "yarn safe-rm-ycache && yarn safe-rm-dist && yarn safe-rm-node-modules && yarn cache clean",
         "install:clean": "yarn clean && yarn install",
-        "serve": "nodemon --inspect=0.0.0.0:9229 -e js,handlebars -w src --exec src/client/entry.js",
+        "serve": "nodemon --inspect=0.0.0.0:9229 -e js,handlebars -w src --exec src/entry.js",
         "start": "yarn build:dev && yarn serve",
         "restart": "yarn install:clean && yarn build:dev && yarn serve"
     },
