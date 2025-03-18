@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "LabelBox assignment",
   "main": "index.js",
+  "engines": {
+    "node": "^23.10.0",
+    "yarn": "^4.7.0"
+  },
+  "packageManager": "yarn@4.7.0",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "nodemon index.js",
