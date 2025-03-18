@@ -10,22 +10,26 @@ const isProduction = (envVar) => envVar == 'production';
 const __dirname = path.resolve();
 
 const babelOptions = {
-    presets: ['@babel/preset-env', '@babel/preset-react'],
+    presets: ['@babel/preset-env'],
+    plugins: [
+        ['module-resolver', { root: ['./src'] }],
+        ['@babel/transform-runtime'],
+    ],
 };
 
 const buildConfig = (env, argv) => ({
     context: path.resolve(__dirname),
     devtool: 'inline-source-map',
-    devServer: {
-        host: 'localhost',
-        open: true,
-        port: 9229,
-        static: {
-            directory: path.resolve(__dirname, 'dist'),
-        },
-    },
+    // devServer: {
+    //     host: 'localhost',
+    //     open: true,
+    //     port: 9229,
+    //     static: {
+    //         directory: path.resolve(__dirname, 'dist'),
+    //     },
+    // },
     entry: {
-        home: ['@babel/polyfill', path.resolve(__dirname, 'src/client/pages/home.js')],
+        home: ['@babel/polyfill', path.resolve(__dirname, 'src/pages/home.js')],
     },
     output: {
         filename: '[name]-[chunkhash].min.js',
@@ -34,16 +38,6 @@ const buildConfig = (env, argv) => ({
     },
     module: {
         rules: [
-            {
-                test: /\.js(x?)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: babelOptions,
-                    },
-                ],
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -68,12 +62,12 @@ const buildConfig = (env, argv) => ({
             cacheGroups: {
                 commonVendors: {
                     test: /^.*node_modules[\/\\](?!).*$/,
-                    name: 'nlpssaVendor',
+                    name: 'nasapodVendor',
                     chunks: 'initial',
                 },
                 commons: {
                     test: /[\/\\]src\/common[\/\\]/,
-                    name: 'nlpssaCommon',
+                    name: 'nasapodCommon',
                     chunks: 'initial',
                     enforce: true,
                 },
@@ -86,9 +80,10 @@ const buildConfig = (env, argv) => ({
     plugins: getPlugins(argv.mode),
     resolve: {
         alias: {
-            client: path.resolve(__dirname, 'src/client'),
+          // TODO: this alias doesn't work :[
+          '@/*': path.resolve(__dirname, 'src/*'),
         },
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.cjs', '.mjs', '.ts'],
         modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
 });
