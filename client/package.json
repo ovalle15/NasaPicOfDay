@@ -1,5 +1,6 @@
 {
     "name": "client",
+    "packageManager": "yarn@4.7.0",
     "scripts": {
         "safe-rm-ycache": "rm -rf .yarn/ || true",
         "safe-rm-dist": "rm -rf dist/ || true",
