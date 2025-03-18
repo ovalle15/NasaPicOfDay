@@ -1,11 +1,8 @@
-version: '3'
-
 services:
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: aolc543/labelboxnasa:nasa-image1
     container_name: labelbox_server
     command: npm start
     volumes:
