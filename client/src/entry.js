@@ -1,5 +1,6 @@
-import expressApp from './expressApp';
-import { createTerminationHandler } from './utils';
+import expressApp from './expressApp.js';
+
+import { createTerminationHandler } from './utils/index.js';
 
 const CLIENT_PORT = Number(process.env.CLIENT_PORT || 8080);
 const HOST = process.env.HOST || '0.0.0.0';
