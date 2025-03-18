@@ -1,8 +1,17 @@
 services:
+  all:
+    image: alpine
+    command: sh -c "echo start"
+    depends_on:
+      - client
+      - server
+      - mongo
+
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
+      target: client-dev
     container_name: nasa-pod-app_client
     env_file: .env
     environment:
@@ -14,18 +23,17 @@ services:
       - "9229:9229"
     volumes:
       - ./client:/opt/nasa-pod-app/client
-      - /opt/nasa-pod-app/node_modules
+      - /opt/nasa-pod-app/client/node_modules
 
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-      target: client-dev
+      target: server-dev
     container_name: nasa-pod-app_server
-    command: npm start
     volumes:
-      - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./server:/opt/nasa-pod-app/server
+      - /opt/nasa-pod-app/server/node_modules
     ports:
       - "3000:3000"
     depends_on:

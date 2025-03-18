@@ -1,16 +1,19 @@
 #  Dockerfile for Node Express Backend
 
-FROM node:12.14
+FROM node:23-bullseye AS server-dev
+# TODO: this seems redundant...?
+ENV NODE_ENV development
+ENV NODE_ENV $NODE_ENV
+ENV yarn='corepack yarn'
 
-# Create App Directory
-RUN mkdir -p /usr/src/app
-
-WORKDIR /usr/src/app
+WORKDIR /opt/nasa-pod-app/server
 
 # Install Dependencies
+COPY .yarn ./
 COPY package*.json ./
+COPY yarn.lock ./
 
-RUN npm install --silent
+RUN $yarn install
 
 # Copy app source code
 COPY . .
@@ -18,4 +21,4 @@ COPY . .
 # Exports
 EXPOSE 3000
 
-CMD ["npm","start"]
+ENTRYPOINT $yarn start
