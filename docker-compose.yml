@@ -1,9 +1,27 @@
 services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: nasa-pod-app_client
+    env_file: .env
+    environment:
+      EXAMPLE: woof
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    volumes:
+      - ./client:/opt/nasa-pod-app/client
+      - /opt/nasa-pod-app/node_modules
+
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: labelbox_server
+      target: client-dev
+    container_name: nasa-pod-app_server
     command: npm start
     volumes:
       - ./server/:/usr/src/app

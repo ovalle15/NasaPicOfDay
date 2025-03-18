@@ -1,12 +1,17 @@
 {
     "name": "client",
     "packageManager": "yarn@4.7.0",
+    "version": "0.0.0",
+    "type": "module",
+    "engines": {
+      "node": "^23.10.0",
+      "yarn": "^4.7.0"
+    },
     "scripts": {
         "safe-rm-ycache": "rm -rf .yarn/ || true",
         "safe-rm-dist": "rm -rf dist/ || true",
         "safe-rm-node-modules": "rm -rf node_modules/ || true",
-        "build:ts": "tsc -b --verbose",
-        "build:dev": "yarn build:ts && webpack --mode=development --node-env=development",
+        "build:dev": "webpack --mode=development --node-env=development",
         "build:prod": "webpack --mode=production --node-env=production",
         "build": "yarn build:prod",
         "watch": "webpack --mode=development --node-env=development --watch",
